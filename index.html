@@ -581,7 +581,7 @@
                     <span>Total estimado:</span>
                     <span id="modalTotal" class="text-brand-primary text-xl">$0.00</span>
                 </div>
-                <button onclick="sendToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center space-x-2 text-sm transition-colors cursor-pointer">
+                <button id="sendWhatsAppBtn" onclick="sendToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center space-x-2 text-sm transition-colors cursor-pointer">
                     <i class="fa-brands fa-whatsapp text-lg"></i>
                     <span>Enviar pedido por WhatsApp</span>
                 </button>
@@ -651,11 +651,11 @@
             return total;
         }
 
-        function openModal() {
-            const modal = document.getElementById('orderModal');
+        function renderModalList() {
             const listContainer = document.getElementById('modalItemsList');
             const modalTotal = document.getElementById('modalTotal');
-            
+            const sendBtn = document.getElementById('sendWhatsAppBtn');
+
             let total = 0;
             let hasItems = false;
             listContainer.innerHTML = '';
@@ -666,31 +666,60 @@
                 const price = parseFloat(item.getAttribute('data-price')) || 0;
                 const qtyElement = item.querySelector('.qty-count');
                 const qty = qtyElement ? parseInt(qtyElement.innerText) || 0 : 0;
-                
-                if (qty > 0) {
+                const itemId = qtyElement ? qtyElement.id.replace('qty-', '') : null;
+
+                if (qty > 0 && itemId) {
                     hasItems = true;
                     const itemSubtotal = price * qty;
                     total += itemSubtotal;
 
                     const row = document.createElement('div');
-                    row.className = "flex justify-between items-center pt-2";
+                    row.className = "flex justify-between items-center pt-3 pb-1";
                     row.innerHTML = `
-                        <div>
-                            <p class="font-bold text-white">${name}</p>
-                            <p class="text-xs text-gray-400">${qty} x $${price.toFixed(2)}</p>
+                        <div class="pr-2">
+                            <p class="font-bold text-white text-sm">${name}</p>
+                            <p class="text-xs text-gray-400">$${price.toFixed(2)} c/u</p>
                         </div>
-                        <span class="font-black text-brand-primary">$${itemSubtotal.toFixed(2)}</span>
+                        <div class="flex items-center gap-3 flex-shrink-0">
+                            <div class="flex items-center space-x-2 bg-black/40 rounded-md p-1">
+                                <button onclick="updateQtyFromModal('${itemId}', -1)" class="w-6 h-6 flex items-center justify-center text-xs font-bold bg-brand-border text-white rounded">-</button>
+                                <span class="text-xs font-bold w-4 text-center text-white">${qty}</span>
+                                <button onclick="updateQtyFromModal('${itemId}', 1)" class="w-6 h-6 flex items-center justify-center text-xs font-bold bg-brand-primary text-black rounded">+</button>
+                            </div>
+                            <span class="font-black text-brand-primary w-16 text-right">$${itemSubtotal.toFixed(2)}</span>
+                        </div>
                     `;
                     listContainer.appendChild(row);
                 }
             });
 
             if (!hasItems) {
+                listContainer.innerHTML = '<p class="text-center text-gray-500 text-sm py-6">Tu pedido está vacío.</p>';
+            }
+
+            modalTotal.innerText = `$${total.toFixed(2)}`;
+            if (sendBtn) {
+                sendBtn.disabled = !hasItems;
+                sendBtn.classList.toggle('opacity-40', !hasItems);
+                sendBtn.classList.toggle('cursor-not-allowed', !hasItems);
+            }
+            return hasItems;
+        }
+
+        function updateQtyFromModal(id, change) {
+            updateQty(id, change);
+            renderModalList();
+        }
+
+        function openModal() {
+            const modal = document.getElementById('orderModal');
+            const hasItems = renderModalList();
+
+            if (!hasItems) {
                 alert("Aún no has seleccionado ningún producto.");
                 return;
             }
 
-            modalTotal.innerText = `$${total.toFixed(2)}`;
             modal.classList.remove('hidden');
         }
 
