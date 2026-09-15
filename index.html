@@ -765,16 +765,40 @@
             
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodedMessage}`, '_blank');
-            // Control para reemplazo de imágenes rotas
-  const fallbackSVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'><rect width='100%' height='100%' fill='%23f3f4f6'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-family='sans-serif' font-size='16'>Imagen no disponible</text></svg>";
+            // Reemplazo inteligente de imágenes según el plato
+  const imagenesRespaldo = {
+    pizza: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop",
+    hamburguesa: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop",
+    pasta: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=500&auto=format&fit=crop",
+    bebida: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop",
+    postre: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500&auto=format&fit=crop",
+    general: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&auto=format&fit=crop"
+  };
 
-  document.addEventListener("error", (event) => {
-    if (event.target.tagName === "IMG") {
-      event.target.onerror = null;
-      event.target.src = fallbackSVG;
+  document.querySelectorAll('.product-item').forEach((tarjeta) => {
+    const img = tarjeta.querySelector('img');
+    if (!img) return;
+
+    img.onerror = function () {
+      this.onerror = null;
+      const textoPlato = tarjeta.innerText.toLowerCase();
+
+      if (textoPlato.includes('pizza')) {
+        this.src = imagenesRespaldo.pizza;
+      } else if (textoPlato.includes('burg') || textoPlato.includes('hamburguesa')) {
+        this.src = imagenesRespaldo.hamburguesa;
+      } else if (textoPlato.includes('pasta') || textoPlato.includes('spaghetti') || textoPlato.includes('lasa')) {
+        this.src = imagenesRespaldo.pasta;
+      } else if (textoPlato.includes('coca') || textoPlato.includes('jugo') || textoPlato.includes('cerveza') || textoPlato.includes('refresco') || textoPlato.includes('bebida') || textoPlato.includes('agua')) {
+        this.src = imagenesRespaldo.bebida;
+      } else if (textoPlato.includes('postre') || textoPlato.includes('torta') || textoPlato.includes('helado') || textoPlato.includes('pie') || textoPlato.includes('tiramisu')) {
+        this.src = imagenesRespaldo.postre;
+      } else {
+        this.src = imagenesRespaldo.general;
+      }
     };
-    });
-  }
-    </script>
+  });
+}
+</script>
 </body>
 </html>
