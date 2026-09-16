@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Interactivo - Pizzería Borcelle (Premium)</title>
+    <title>Pizzería Borcelle | Menú</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -550,7 +550,7 @@
     <div class="fixed bottom-0 left-0 right-0 bg-brand-dark border-t border-brand-border shadow-lg p-3 z-40">
         <div class="max-w-md mx-auto flex items-center justify-between">
             <div>
-                <span class="text-xs text-gray-500 block">Total a pagar:</span>
+                <span class="text-xm text-gray-200/70 block">Total estimado:</span>
                 <span id="cartTotal" class="text-xl font-black text-brand-primary">$0.0</span>
                   <p class="text-[12px] text-gray-200/70 italic leading-none mt-0.5">*No incluye delivery.</p>
             </div>
@@ -731,7 +731,7 @@
         }
 
         function sendToWhatsApp() {
-            let message = "*¡Hola! Quisiera realizar el siguiente pedido:*\n\n";
+            let message = "*¡Hola Pizzería Borcelle! Quisiera realizar el siguiente pedido:*\n\n";
             let hasItems = false;
             let total = 0;
 
