@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Meta Tags para vista previa en WhatsApp y Redes Sociales -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Pizzería Borcelle | Menú con Imágenes">
+    <meta property="og:description" content="Demo de menú interactivo para restaurantes por Efecto Landing. Realiza tu pedido directo por WhatsApp.">
+    <meta property="og:image" content="https://eldac23.github.io/menupizzas/ELlogo.png">
+    <meta property="og:url" content="https://eldac23.github.io/demopremium/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pizzería Borcelle | Menú</title>
@@ -97,7 +103,7 @@
             <!-- Input de Búsqueda -->
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
-                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar pizza, pasta, bebida..." 
+                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Buscar pizza, pasta, bebida..."
                        class="w-full pl-9 pr-4 py-2 text-sm bg-brand-card text-white placeholder-gray-500 rounded-full border border-brand-border focus:outline-none focus:ring-2 focus:ring-brand-primary">
             </div>
         </header>
@@ -593,14 +599,14 @@
 
     <script>
         // Cambia este número por el número real donde recibirás los pedidos
-        const PHONE_NUMBER = "584128995687"; 
+        const PHONE_NUMBER = "584128995687";
 
         function scrollToCategory(categoryId, btnElement) {
             const element = document.getElementById(categoryId);
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
             }
-            
+
             const buttons = document.querySelectorAll('#categoryTabs button');
             buttons.forEach(btn => {
                 btn.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-brand-card text-gray-300 whitespace-nowrap border border-brand-border";
@@ -613,7 +619,7 @@
         function filterProducts() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const items = document.querySelectorAll('.product-item');
-            
+
             items.forEach(item => {
                 const name = item.getAttribute('data-name') || item.querySelector('h3').innerText.toLowerCase();
                 if (name.includes(query)) {
@@ -630,7 +636,7 @@
                 let currentQty = parseInt(qtyElement.innerText);
                 currentQty = Math.max(0, currentQty + change);
                 qtyElement.innerText = currentQty;
-                
+
                 calculateTotal();
             }
         }
@@ -638,7 +644,7 @@
         function calculateTotal() {
             let total = 0;
             const items = document.querySelectorAll('.product-item');
-            
+
             items.forEach(item => {
                 const price = parseFloat(item.getAttribute('data-price')) || 0;
                 const qtyElement = item.querySelector('.qty-count');
@@ -741,7 +747,7 @@
                 const price = parseFloat(item.getAttribute('data-price')) || 0;
                 const qtyElement = item.querySelector('.qty-count');
                 const qty = qtyElement ? parseInt(qtyElement.innerText) || 0 : 0;
-                
+
                 if (qty > 0) {
                     hasItems = true;
                     const subtotal = price * qty;
@@ -753,7 +759,7 @@
             if (!hasItems) return;
 
             message += `\n*Total estimado: $${total.toFixed(2)}*`;
-            
+
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodedMessage}`, '_blank');
         }
