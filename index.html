@@ -81,7 +81,7 @@
 <body class="text-gray-100 pb-24 font-sans antialiased">
 
     <!-- Header y Menú Sticky -->
-    <div class="sticky top-0 z-30">
+    <div class="sticky top-0 z-30" id="stickyHeader">
         <header class="bg-brand-dark border-b border-brand-border px-4 pt-5 pb-4 relative z-10">
             <div class="text-center mb-3">
                 <h1 class="text-2xl font-black text-white tracking-wide uppercase">Pizzería Borcelle</h1>
@@ -123,7 +123,7 @@
     <main class="max-w-md mx-auto px-3 pt-6 space-y-8" id="menuContainer">
 
         <!-- Categoría: Pizzas -->
-        <section id="pizzas" class="category-section scroll-mt-[460px]">
+        <section id="pizzas" class="category-section">
             <h2 class="brush-title text-lg font-black text-black mb-5">Pizzas</h2>
             <div class="space-y-5">
 
@@ -275,7 +275,7 @@
         </section>
 
         <!-- Categoría: Pastas -->
-        <section id="pastas" class="category-section scroll-mt-[460px]">
+        <section id="pastas" class="category-section">
             <h2 class="brush-title text-lg font-black text-black mb-5">Pastas</h2>
             <div class="space-y-5">
 
@@ -427,7 +427,7 @@
         </section>
 
         <!-- Categoría: Bebidas -->
-        <section id="bebidas" class="category-section scroll-mt-[460px]">
+        <section id="bebidas" class="category-section">
             <h2 class="brush-title text-lg font-black text-black mb-5">Bebidas</h2>
             <div class="space-y-5">
 
@@ -507,7 +507,7 @@
         </section>
 
         <!-- Categoría: Postres -->
-        <section id="postres" class="category-section scroll-mt-[460px]">
+        <section id="postres" class="category-section">
             <h2 class="brush-title text-lg font-black text-black mb-5">Postres</h2>
             <div class="space-y-5">
 
@@ -600,6 +600,20 @@
     <script>
         // Cambia este número por el número real donde recibirás los pedidos
         const PHONE_NUMBER = "584128995687";
+
+        // Calcula la altura real del header pegajoso (header + barra de categorías)
+        // y la aplica como margen de scroll a cada categoría, con un pequeño respiro extra.
+        // Así el título nunca queda tapado, sin depender de un valor fijo en píxeles.
+        function setCategoryScrollOffset() {
+            const stickyHeader = document.getElementById('stickyHeader');
+            if (!stickyHeader) return;
+            const offset = stickyHeader.offsetHeight + 12;
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.style.scrollMarginTop = offset + 'px';
+            });
+        }
+        window.addEventListener('load', setCategoryScrollOffset);
+        window.addEventListener('resize', setCategoryScrollOffset);
 
         function scrollToCategory(categoryId, btnElement) {
             const element = document.getElementById(categoryId);
