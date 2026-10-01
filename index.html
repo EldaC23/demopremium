@@ -785,9 +785,31 @@
 
             message += `\n*Total estimado: $${total.toFixed(2)}*`;
 
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodedMessage}`, '_blank');
+            // Modo demostración: se muestra cómo llegaría el pedido, sin enviarlo a nadie.
+            document.getElementById('demoMessagePreview').innerText = message;
+            document.getElementById('demoModal').classList.remove('hidden');
+        }
+
+        function closeDemoModal() {
+            document.getElementById('demoModal').classList.add('hidden');
         }
     </script>
+
+    <!-- MODO DEMOSTRACIÓN: muestra cómo llegaría el pedido, sin enviarlo a nadie -->
+    <div id="demoModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-brand-dark border border-brand-border rounded-2xl p-5 max-w-sm w-full shadow-2xl relative text-white space-y-4">
+            <button onclick="closeDemoModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white text-lg p-1" aria-label="Cerrar">&#10005;</button>
+            <div class="text-center space-y-1">
+                <span class="bg-brand-primary/20 text-brand-primary text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">Modo demostraci&oacute;n</span>
+                <h3 class="text-lg font-bold text-white pt-1">&#128640; &iexcl;As&iacute; recibir&iacute;as este pedido!</h3>
+                <p class="text-xs text-gray-300">El sistema genera el mensaje listo para llegar a tu WhatsApp. En esta demo no se env&iacute;a a nadie:</p>
+            </div>
+            <div id="demoMessagePreview" class="bg-black/40 border border-brand-border rounded-xl p-3.5 text-xs font-mono text-gray-200 leading-relaxed max-h-56 overflow-y-auto whitespace-pre-wrap"></div>
+            <div class="text-center pt-1 space-y-3">
+                <p class="text-xs text-gray-300 px-1">&iquest;Te gustar&iacute;a automatizar la toma de pedidos en tu negocio con un men&uacute; interactivo como este?</p>
+                <a href="https://eldac23.github.io/efectolandingmenu/#cotizar" class="block w-full bg-brand-primary hover:opacity-90 text-black font-bold py-3 rounded-xl transition-all text-center text-xs uppercase tracking-wide shadow-lg">Quiero cotizar mi men&uacute;</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
