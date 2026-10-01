@@ -80,6 +80,17 @@
 </head>
 <body class="text-gray-100 pb-24 font-sans antialiased">
 
+    <!-- Volver a la landing de Menús Interactivos (solo si llegan con ?from=efecto) -->
+    <a id="back-efecto" href="https://eldac23.github.io/efectolandingmenu/#demos"
+       style="display:none" class="bg-black text-center text-xs font-bold uppercase tracking-wider text-brand-primary py-2.5 border-b border-brand-border">
+        &larr; Volver a Men&uacute;s Interactivos
+    </a>
+    <script>
+        if (new URLSearchParams(location.search).get('from') === 'efecto') {
+            document.getElementById('back-efecto').style.display = 'block';
+        }
+    </script>
+
     <!-- Header y Menú Sticky -->
     <div class="sticky top-0 z-30" id="stickyHeader">
         <header class="bg-brand-dark border-b border-brand-border px-4 pt-5 pb-4 relative z-10">
